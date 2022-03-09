@@ -2,26 +2,19 @@ package com.company;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Catalogue {
     private Item[] items;
 
-    public Catalogue(int setSize){
+    public Catalogue(int setSize) {
         items = new Item[setSize];
     }
-    public Item[] getFullList(){
+    public Item[] getFullList() {
         return items;
     }
-    public Item[] getAvailableItems(){
-        int numberOfAvailableItems = 0;
-        for (int i = 0; i < items.length; i++) {
-            if (items[i] != null) {
-                if (items[i].getIsAvailable()) {
-                    numberOfAvailableItems += 1;
-                }
-            }
-        }
-        Item[] availableItems = new Item [numberOfAvailableItems];
+    public Item[] getAvailableItems() {
+        Item[] availableItems = new Item[getNumberOfAvailableItems()];
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null) {
                 if (items[i].getIsAvailable()) {
@@ -36,7 +29,18 @@ public class Catalogue {
         }
         return availableItems;
     }
-    public void addItem(Item item){
+    private int getNumberOfAvailableItems() {
+        int numberOfAvailableItems = 0;
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] != null) {
+                if (items[i].getIsAvailable()) {
+                    numberOfAvailableItems += 1;
+                }
+            }
+        }
+        return numberOfAvailableItems;
+    }
+    public void addItem(Item item) {
         for (int i = 0; i < items.length; i++) {
             if (items[i] == null) {
                 items[i] = item;
@@ -48,7 +52,7 @@ public class Catalogue {
         Item foundItem = new Item();
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null) {
-                if (items[i].getDescription() == itemName) {
+                if (items[i].getDescription().equals(itemName)) {
                     foundItem = items[i];
                 }
             }

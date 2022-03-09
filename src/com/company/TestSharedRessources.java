@@ -4,8 +4,9 @@ import java.util.Scanner;
 
 public class TestSharedRessources {
 
-    Catalogue catalogue;
-    Scanner sc;
+    private final int catalogueSize = 10;
+    private Catalogue catalogue;
+    private Scanner sc;
 
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_RED = "\u001B[31m";
@@ -15,14 +16,15 @@ public class TestSharedRessources {
 
     public static void main(String[] args) {
         TestSharedRessources test = new TestSharedRessources();
-        test.sc = new Scanner(System.in);
         test.runProgram();
     }
     private void runProgram() {
+        sc = new Scanner(System.in);
+        catalogue = new Catalogue(catalogueSize);
+        createDefaultItems();
         mainMenu();
     }
-    private void mainMenu() {
-        catalogue = new Catalogue(10);
+    private void createDefaultItems(){
         Item item1 = new Item("Sport", "Skateboard");
         catalogue.addItem(item1);
         Item item2 = new Item("Sport", "Mountainbike");
@@ -31,6 +33,8 @@ public class TestSharedRessources {
         catalogue.addItem(item3);
         Item item4 = new Item("Clothing", "Dress");
         catalogue.addItem(item4);
+    }
+    private void mainMenu() {
 
         System.out.println("What do you want to do?");
         System.out.println("1. See the entire catalogue");
@@ -63,36 +67,44 @@ public class TestSharedRessources {
                 System.out.print("Enter item category: ");
                 String newItemCategory = sc.nextLine();
 
-                Item item10 = new Item("Music", "Guitar");
-                catalogue.addItem(item10);
-
-                Item newItem = new Item(newItemDescription, newItemCategory);
+                Item newItem = new Item(newItemCategory, newItemDescription);
                 catalogue.addItem(newItem);
                 System.out.println("Added new item: " + newItem);
                 askToRunAgain();
             }
-            case 4 -> { // make item unavailable
-                // Hardcoded search criteria Skateboard
-                Item found = catalogue.findItem("Skateboard");
-                catalogue.borrowItem(found);
-                System.out.println("Borrowed item: " + found);
+            case 4 -> { // borrow item
+                System.out.print("Enter item description: ");
+                String newItemDescription = sc.nextLine();
+
+                Item found = catalogue.findItem(newItemDescription);
+                if ((found.getDescription() != "") && (found.getIsAvailable())) {
+                    System.out.println("Borrowed item: " + found);
+                    catalogue.borrowItem(found);
+                }
+                else {
+                    System.out.println("Couldn't find available item: " + newItemDescription);
+                }
                 askToRunAgain();
                 break;
             }
-            case 5 -> { // make item available again
-                // Hardcoded search criteria Skateboard
-                Item found = catalogue.findItem("Skateboard");
-                catalogue.returnItem(found);
-                System.out.println("Returned item: " + found);
+            case 5 -> { // return item
+                System.out.print("Enter item description: ");
+                String newItemDescription = sc.nextLine();
+
+                Item found = catalogue.findItem(newItemDescription);
+                if ((found.getDescription() != "") && (!found.getIsAvailable())) {
+                    System.out.println("Returned item: " + found);
+                    catalogue.returnItem(found);
+                }
+                else {
+                    System.out.println("Couldn't find borrowed item: " + newItemDescription);
+                }
                 askToRunAgain();
                 break;
             }
             default ->  // invalid choice
                 System.out.println("Invalid choice.");
         }
-    }
-    private void createDefaultItems(){
-
     }
     private void askToRunAgain() {
         boolean answeredYesNo = false;
