@@ -1,11 +1,7 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 public class Catalogue {
-    private Item[] items;
+    private final Item[] items;
 
     public Catalogue(int setSize) {
         items = new Item[setSize];
