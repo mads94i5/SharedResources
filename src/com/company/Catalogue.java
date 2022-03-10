@@ -12,13 +12,11 @@ public class Catalogue {
     public Item[] getAvailableItems() {
         Item[] availableItems = new Item[getNumberOfAvailableItems()];
         for (int i = 0; i < items.length; i++) {
-            if (items[i] != null) {
-                if (items[i].getIsAvailable()) {
-                    for (int o = 0; o < availableItems.length; o++) {
-                        if (availableItems[o] == null) {
-                            availableItems[o] = items[i];
-                            break;
-                        }
+            if ((items[i] != null) && (items[i].getIsAvailable())) {
+                for (int o = 0; o < availableItems.length; o++) {
+                    if (availableItems[o] == null) {
+                        availableItems[o] = items[i];
+                        break;
                     }
                 }
             }
@@ -28,10 +26,8 @@ public class Catalogue {
     private int getNumberOfAvailableItems() {
         int numberOfAvailableItems = 0;
         for (int i = 0; i < items.length; i++) {
-            if (items[i] != null) {
-                if (items[i].getIsAvailable()) {
+            if ((items[i] != null) && (items[i].getIsAvailable())) {
                     numberOfAvailableItems += 1;
-                }
             }
         }
         return numberOfAvailableItems;
